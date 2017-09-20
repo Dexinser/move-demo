@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>move</title>
+	<style>
+		/*.wrapper {
+			position: absolute;
+			box-sizing: border-box;
+			left: -500px;
+			bottom: 35px;
+			width: 500px;
+			height: 100px;
+			background-color: rgba(255,255,0,.6);
+			text-align: center;
+			line-height: 135px;
+		}
+		.wrapper .circle {
+			display: inline-block;
+			width: 50px;
+			height: 50px;
+			background-color: rgba(144,144,144,.6);
+			border-radius: 50%;
+		}
+		.wrapper .square {
+			position: absolute;
+			right: -30px;
+			width: 30px;
+			height: 100px;
+			background-color: rgba(255,100,100,.8);
+			display: inline-block;
+			font-weight: 900;
+			overflow: hidden;
+		}*/
+		#demo {
+			width: 300px;
+			height: 300px;
+			margin: 100px auto;
+			background-color: rgba(144,144,144,1);
+		}
+	</style>
+</head>
+<body>
+	<!-- <div class="wrapper" id="demo">
+		你瞅啥？
+		<div class="square" id="hover">>></div>
+		<div class="circle">=圆=</div>
+		瞅你咋地？
+	</div> -->
+
+	<div id="demo" style="opacity: 0">我会隐身的~~嘿嘿嘿~~  <br>这是一个用缓冲运动的运动方法来调节DOM上的css属性的opacity的方法！</div>
+	<script>
+		// var oDiv = document.getElementById('demo');
+		// var timer = null;
+		// oDiv.onmouseenter = function () {
+		// 	startMove(0, 8);
+		// }
+		// oDiv.onmouseleave = function () {
+		// 	startMove(-500, 6);
+		// }
+		// function startMove(iTarget, buffer) {
+		// 	clearInterval(timer);
+		// 	var iSpeed = 0;
+		// 	timer = window.setInterval(function(){
+		// 		iSpeed = (iTarget - oDiv.offsetLeft) / buffer;
+		// 		if (iSpeed > 0) {
+		// 			iSpeed = Math.ceil(iSpeed);
+		// 		}else {
+		// 			iSpeed = Math.floor(iSpeed);
+		// 		}
+		// 		if(Math.abs(iTarget - oDiv.offsetLeft) < Math.abs(iSpeed)){
+		// 			clearInterval(timer);
+		// 			oDiv.style.left = iTarget + 'px';
+		// 		}else{
+		// 			oDiv.style.left = oDiv.offsetLeft + iSpeed + 'px';
+		// 		}
+		// 	},30);
+		// }
+		var oDiv = document.getElementById('demo');
+		var timer = null;
+		var target;
+		var currentOpacity = oDiv.style.opacity * 1000;
+		function startMove(iTarget, buffer) {
+			clearInterval(timer);
+			var iSpeed = 0;
+			timer = window.setInterval(function(){
+				target = iTarget;
+				iSpeed = (iTarget - currentOpacity) / buffer;
+				iSpeed > 0 ? iSpeed = Math.ceil(iSpeed) : iSpeed = Math.floor(iSpeed);
+				currentOpacity === iTarget ? clearInterval(timer) : (oDiv.style.opacity = (currentOpacity += iSpeed) && (currentOpacity + iSpeed ) / 1000);
+			},10);
+		}
+		startMove(1000, 10)
+		oDiv.onclick = function () {
+			var current = oDiv.style.opacity * 1000;
+			if (current === target) {
+				startMove(1000, 8)
+			}else {
+				startMove(0, 8)
+			}
+		}
+
+
+
+
+
+		// 这是测试Math.floor() 方法的准确性的。测试出来这个方法确实不准确啊！这个方法说是向下取整，取不大于调用这个函数的最大整数。但是验证出来这个方法在setInterval()方法里并不能有效的取到最小最接近的整数，而是取到的小数后面好多位的数字。这个方法往后能取到的最小数经过测试为10的-322小数,hahahahah你能相信你自己说的话吗？哈哈哈，以上纯属扯淡，其实这个只是一个最基础的问题，就是原始值不可改变。这个大坑相信很多人都犯过。所以一定要谨记以往我们所踩过的坑！！！谨此敬礼！
+		// !function test(){
+		// 	var is = 100;
+		// 		is = is/7;
+		// 		Math.floor(is);
+		// 		console.log(is)
+			
+		// }()
+	</script>
+</body>
+</html>
